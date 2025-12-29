@@ -256,6 +256,9 @@ type Config struct {
 	KPRConfig kpr.KPRConfig
 
 	SvcRouteConfig svcrouteconfig.RoutesConfig
+
+	// EnableBandwidthManager enables EDT-based pacing
+	EnableBandwidthManager bool
 }
 
 // DeepEqual compares two LocalNodeConfiguration structs for equality.

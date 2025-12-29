@@ -20,6 +20,7 @@ import (
 	"github.com/cilium/cilium/pkg/datapath/connector"
 	"github.com/cilium/cilium/pkg/datapath/iptables"
 	"github.com/cilium/cilium/pkg/datapath/linux/bigtcp"
+	bwtypes "github.com/cilium/cilium/pkg/datapath/linux/bandwidth/types"
 	ipsec "github.com/cilium/cilium/pkg/datapath/linux/ipsec/types"
 	"github.com/cilium/cilium/pkg/datapath/linux/sysctl"
 	"github.com/cilium/cilium/pkg/datapath/loader/metrics"
@@ -123,6 +124,7 @@ type orchestratorParams struct {
 	IPsecConfig         ipsec.Config
 	BIGTCPConfig        bigtcp.Config
 	ConnectorConfig     connector.Config
+	BandwidthConfig     bwtypes.Config
 }
 
 func newOrchestrator(params orchestratorParams) *orchestrator {
@@ -231,6 +233,7 @@ func (o *orchestrator) reconciler(ctx context.Context, health cell.Health) error
 			o.params.WgAgent,
 			o.params.IPsecConfig,
 			o.params.ConnectorConfig,
+			o.params.BandwidthConfig,
 		)
 		if err != nil {
 			health.Degraded("failed to get local node configuration", err)

@@ -16,6 +16,7 @@ import (
 	"github.com/cilium/cilium/pkg/common"
 	"github.com/cilium/cilium/pkg/datapath/config"
 	"github.com/cilium/cilium/pkg/datapath/connector"
+	bwtypes "github.com/cilium/cilium/pkg/datapath/linux/bandwidth/types"
 	ipsec "github.com/cilium/cilium/pkg/datapath/linux/ipsec/types"
 	"github.com/cilium/cilium/pkg/datapath/linux/sysctl"
 	"github.com/cilium/cilium/pkg/datapath/tables"
@@ -71,6 +72,7 @@ func newLocalNodeConfig(
 	wgAgent wgTypes.Agent,
 	ipsecCfg ipsec.Config,
 	connectorConfig connector.Config,
+	bwConfig bwtypes.Config,
 ) (config.Config, <-chan struct{}, error) {
 	auxPrefixes := []*cidr.CIDR{}
 
@@ -194,6 +196,7 @@ func newLocalNodeConfig(
 		MaglevConfig:                 maglevConfig,
 		DatapathIsLayer2:             connectorConfig.GetOperationalMode().IsLayer2(),
 		DatapathIsNetkit:             connectorConfig.GetOperationalMode().IsNetkit(),
+		EnableBandwidthManager:       bwConfig.EnableBandwidthManager,
 	}, common.MergeChannels(watchChans...), nil
 }
 

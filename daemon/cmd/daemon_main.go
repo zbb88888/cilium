@@ -27,6 +27,7 @@ import (
 	"github.com/cilium/cilium/pkg/bpf"
 	"github.com/cilium/cilium/pkg/cgroups"
 	"github.com/cilium/cilium/pkg/common"
+	bwtypes "github.com/cilium/cilium/pkg/datapath/linux/bandwidth/types"
 	ipsec "github.com/cilium/cilium/pkg/datapath/linux/ipsec/types"
 	"github.com/cilium/cilium/pkg/datapath/linux/probes"
 	datapathOption "github.com/cilium/cilium/pkg/datapath/option"
@@ -1201,6 +1202,7 @@ type daemonConfigParams struct {
 	KPRConfig       kpr.KPRConfig
 	KPRInitializer  kprinitializer.KPRInitializer
 	IPSecConfig     ipsec.Config
+	BandwidthConfig bwtypes.Config
 	WireguardConfig wgTypes.Config
 }
 
@@ -1237,6 +1239,7 @@ type daemonParams struct {
 	KPRConfig           kpr.KPRConfig
 	KPRInitializer      kprinitializer.KPRInitializer
 	InfraIPAllocator    infraendpoints.InfraIPAllocator
+	BandwidthConfig     bwtypes.Config
 }
 
 func daemonConfigInitialization(params daemonConfigParams) legacy.DaemonConfigInitialization {

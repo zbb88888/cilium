@@ -1227,14 +1227,15 @@ type DaemonConfig struct {
 	// after.
 	shaSum [32]byte
 
-	CreationTime       time.Time
-	BpfDir             string // BPF template files directory
-	LibDir             string // Cilium library files directory
-	RunDir             string // Cilium runtime directory
-	ExternalEnvoyProxy bool   // Whether Envoy is deployed as external DaemonSet or not
-	EnableXDPPrefilter bool   // Enable XDP-based prefiltering
-	EnableTCX          bool   // Enable attaching endpoint programs using tcx if the kernel supports it
-	EncryptNode        bool   // Set to true for encrypting node IP traffic
+	CreationTime           time.Time
+	BpfDir                 string // BPF template files directory
+	LibDir                 string // Cilium library files directory
+	RunDir                 string // Cilium runtime directory
+	ExternalEnvoyProxy     bool   // Whether Envoy is deployed as external DaemonSet or not
+	EnableXDPPrefilter     bool   // Enable XDP-based prefiltering
+	EnableTCX              bool   // Enable attaching endpoint programs using tcx if the kernel supports it
+	EnableBandwidthManager bool   // Enable BPF bandwidth manager
+	EncryptNode            bool   // Set to true for encrypting node IP traffic
 
 	DatapathMode string // Datapath mode
 	RoutingMode  string // Routing mode
@@ -2018,9 +2019,9 @@ func (c *DaemonConfig) TunnelingEnabled() bool {
 
 // AreDevicesRequired returns true if the agent needs to attach to the native
 // devices to implement some features.
-func (c *DaemonConfig) AreDevicesRequired(kprCfg kpr.KPRConfig, wireguardEnabled, ipsecEnabled bool) bool {
+func (c *DaemonConfig) AreDevicesRequired(kprCfg kpr.KPRConfig, wireguardEnabled, ipsecEnabled, bandwidthManagerEnabled bool) bool {
 	return kprCfg.KubeProxyReplacement || c.EnableBPFMasquerade || c.EnableHostFirewall || wireguardEnabled ||
-		c.EnableL2Announcements || c.ForceDeviceRequired || ipsecEnabled
+		c.EnableL2Announcements || c.ForceDeviceRequired || ipsecEnabled || bandwidthManagerEnabled
 }
 
 // NeedEgressOnWireGuardDevice returns true if the agent needs to attach
