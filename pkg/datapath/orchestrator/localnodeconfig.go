@@ -52,6 +52,7 @@ func newLocalNodeConfig(
 	kprCfg kpr.KPRConfig,
 	maglevConfig maglev.Config,
 	mtuTbl statedb.Table[mtu.RouteMTU],
+	bwConfig datapath.BandwidthConfig,
 ) (datapath.LocalNodeConfiguration, <-chan struct{}, error) {
 	auxPrefixes := []*cidr.CIDR{}
 
@@ -112,5 +113,6 @@ func newLocalNodeConfig(
 		LBConfig:                     lbConfig,
 		KPRConfig:                    kprCfg,
 		MaglevConfig:                 maglevConfig,
+		EnableBandwidthManager:       bwConfig.EnableBandwidthManager,
 	}, common.MergeChannels(devsWatch, addrsWatch, directRoutingDevWatch, mtuWatch), nil
 }

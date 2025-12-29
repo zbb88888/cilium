@@ -109,6 +109,9 @@ type orchestratorParams struct {
 	LBConfig            loadbalancer.Config
 	KPRConfig           kpr.KPRConfig
 	MaglevConfig        maglev.Config
+
+	// BandwidthConfig enables the BPF bandwidth manager (EDT-based pacing)
+	BandwidthConfig datapath.BandwidthConfig
 }
 
 func newOrchestrator(params orchestratorParams) *orchestrator {
@@ -208,6 +211,7 @@ func (o *orchestrator) reconciler(ctx context.Context, health cell.Health) error
 			o.params.KPRConfig,
 			o.params.MaglevConfig,
 			o.params.MTU,
+			o.params.BandwidthConfig,
 		)
 		if err != nil {
 			health.Degraded("failed to get local node configuration", err)

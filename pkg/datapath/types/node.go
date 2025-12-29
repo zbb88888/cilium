@@ -193,6 +193,8 @@ type LocalNodeConfiguration struct {
 	MaglevConfig maglev.Config
 
 	KPRConfig kpr.KPRConfig
+	// EnableBandwidthManager enables EDT-based pacing
+	EnableBandwidthManager bool
 }
 
 func (cfg *LocalNodeConfiguration) DeviceNames() []string {

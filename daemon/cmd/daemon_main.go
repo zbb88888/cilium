@@ -1412,6 +1412,9 @@ type daemonParams struct {
 	KPRConfig           kpr.KPRConfig
 	EndpointAPIFence    endpointapi.Fence
 	HealthConfig        healthconfig.CiliumHealthConfig
+
+	// BandwidthConfig enables the BPF bandwidth manager (EDT-based pacing)
+	BandwidthConfig datapath.BandwidthConfig
 }
 
 func newDaemonPromise(params daemonParams) (promise.Promise[*Daemon], legacy.DaemonInitialization) {

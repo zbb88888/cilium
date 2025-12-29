@@ -2137,9 +2137,10 @@ func (c *DaemonConfig) TunnelingEnabled() bool {
 
 // AreDevicesRequired returns true if the agent needs to attach to the native
 // devices to implement some features.
-func (c *DaemonConfig) AreDevicesRequired(kprCfg kpr.KPRConfig) bool {
+func (c *DaemonConfig) AreDevicesRequired(kprCfg kpr.KPRConfig, bandwidthManagerEnabled bool) bool {
 	return kprCfg.EnableNodePort || c.EnableHostFirewall || c.EnableWireguard ||
-		c.EnableL2Announcements || c.ForceDeviceRequired || c.EnableIPSec
+		c.EnableL2Announcements || c.ForceDeviceRequired || c.EnableIPSec ||
+		bandwidthManagerEnabled
 }
 
 // NeedIngressOnWireGuardDevice returns true if the agent needs to attach
