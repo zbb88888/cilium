@@ -25,6 +25,7 @@
 #include "lib/config.h"
 #include "lib/arp.h"
 #include "lib/edt.h"
+#include "lib/token_bucket.h"
 #include "lib/ipv6.h"
 #include "lib/ipv4.h"
 #include "lib/icmp6.h"
@@ -2645,6 +2646,12 @@ int cil_to_container(struct __ctx_buff *ctx)
 	}
 #endif /* ENABLE_HOST_FIREWALL && !ENABLE_ROUTING */
 
+#if defined(ENABLE_CNI_CHAINING_GENERIC_VETH) && !defined(ENABLE_HOST_ROUTING)
+	ret = accept(ctx, LXC_ID);
+	if (IS_ERR(ret))
+		return send_drop_notify_ext(ctx, identity, sec_label, LXC_ID,
+					    ret, ext_err, METRIC_INGRESS);
+#endif
 
 	switch (proto) {
 #ifdef ENABLE_IPV6

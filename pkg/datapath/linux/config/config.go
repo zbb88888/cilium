@@ -150,6 +150,14 @@ func (h *HeaderfileWriter) WriteNodeConfig(w io.Writer, cfg *config.Config) erro
 	fw.WriteString(dumpRaw(defaults.RestoreV4Addr, cfg.CiliumInternalIPv4.AsSlice()))
 	fmt.Fprintf(fw, " */\n\n")
 
+	if option.Config.EnableBandwidthManager {
+		cDefinesMap["ENABLE_BANDWIDTH_MANAGER"] = "1"
+	}
+
+	if option.Config.CNIChainingMode == "generic-veth" {
+		cDefinesMap["ENABLE_CNI_CHAINING_GENERIC_VETH"] = "1"
+	}
+
 	cDefinesMap["CILIUM_IPV6_FRAG_MAP_MAX_ENTRIES"] = fmt.Sprintf("%d", option.Config.FragmentsMapEntries)
 
 	if option.Config.EnableIPv4 {
@@ -675,6 +683,10 @@ func (h *HeaderfileWriter) WriteEndpointConfig(w io.Writer, e endpoint.Config) e
 func (h *HeaderfileWriter) writeTemplateConfig(fw *bufio.Writer, e endpoint.Config) error {
 	if e.RequireEgressProg() {
 		fmt.Fprintf(fw, "#define USE_BPF_PROG_FOR_INGRESS_POLICY 1\n")
+	}
+
+	if option.Config.EnableBandwidthManager {
+		fmt.Fprintf(fw, "#ifndef ENABLE_BANDWIDTH_MANAGER\n# define ENABLE_BANDWIDTH_MANAGER 1\n#endif\n")
 	}
 
 	if e.RequireRouting() {

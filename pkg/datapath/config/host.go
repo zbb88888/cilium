@@ -171,6 +171,7 @@ func Netdev(ep endpoint.Config, lnc *Config, link netlink.Link, masq4, masq6 net
 
 	cfg.EnableIPv4Fragments = option.Config.EnableIPv4FragmentsTracking
 	cfg.EnableIPv6Fragments = option.Config.EnableIPv6FragmentsTracking
+	cfg.EnableBandwidthManager = option.Config.EnableBandwidthManager
 
 	switch link.(type) {
 	case *netlink.Bridge:
