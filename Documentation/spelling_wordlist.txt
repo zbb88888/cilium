@@ -877,6 +877,7 @@ vlan
 vmlinux
 vmxnet
 volumeMounts
+vpc
 vrf
 vrouter
 vtep
